@@ -4,31 +4,36 @@ import es.upm.miw.business_services.RestBuilder;
 import es.upm.miw.business_services.RestService;
 import es.upm.miw.documents.Order;
 import es.upm.miw.documents.OrderLine;
+import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.dtos.OrderSearchDto;
 import es.upm.miw.repositories.OrderRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ApiTestConfig
 public class OrderResourceIT {
 
-    private Order order;
-
     @Autowired
     private OrderRepository orderRepository;
-
-    private String idOrder = "";
 
     @Autowired
     private RestService restService;
 
-    private OrderSearchDto existentOrder;
+    @Autowired
+    private Environment environment;
+
+    @Value("${article.provider.microservice}")
+    private String articleProviderURI;
 
     @BeforeEach
     void createOrder() {
@@ -43,7 +48,6 @@ public class OrderResourceIT {
                 }
                 Order order = new Order(description, providerId, orderLines);
                 this.orderRepository.save(order);
-                this.idOrder = order.getId();
             }
         }
     }
@@ -57,6 +61,28 @@ public class OrderResourceIT {
                 .get()
                 .build());
         assertNotNull(orders);
+    }
+
+    @Test
+    void testCreatePass() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setProviderId("5cf42a0c47d52400048bb572");
+        orderDto.setOrderLines(org.assertj.core.util.Arrays.array(new OrderLine("1", 10)));
+        OrderDto orderDtoResponse = this.restService.loginAdmin().restBuilder(new RestBuilder<OrderDto>()).clazz(OrderDto.class)
+                .path(OrderResource.ORDERS).body(orderDto)
+                .post().log().build();
+        assertNotNull(orderDtoResponse);
+    }
+
+    @Test
+    void testCreateNotPass() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setProviderId("2");
+        orderDto.setOrderLines(org.assertj.core.util.Arrays.array(new OrderLine("1", 10)));
+        assertThrows(HttpClientErrorException.NotFound.class, () -> this.restService.loginAdmin().
+                restBuilder(new RestBuilder<OrderDto>()).clazz(OrderDto.class)
+                .path(OrderResource.ORDERS).body(orderDto)
+                .post().log().build());
     }
 
 }

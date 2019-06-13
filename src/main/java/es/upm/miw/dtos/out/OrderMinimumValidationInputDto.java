@@ -2,6 +2,8 @@ package es.upm.miw.dtos.out;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import es.upm.miw.documents.OrderLine;
+import es.upm.miw.dtos.OrderDto;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,13 +19,13 @@ public class OrderMinimumValidationInputDto {
     public OrderMinimumValidationInputDto() {
     }
 
-/*    public OrderMinimumValidationInputDto(ProviderMinimunDto providerMinimunDto, List<ArticleMinimumDto> articleMinimumDtos) {
-        this.providerId = providerMinimunDto.getId();
+    public OrderMinimumValidationInputDto(OrderDto orderDto) {
+        this.providerId = orderDto.getProviderId();
         this.articleIds = new ArrayList<>();
-        for (ArticleMinimumDto dto : articleMinimumDtos) {
-            this.articleIds.add(dto.getCode());
+        for (OrderLine orderLine : orderDto.getOrderLines()) {
+            this.articleIds.add(orderLine.getArticleId());
         }
-    }*/
+    }
 
     public String getProviderId() {
         return providerId;

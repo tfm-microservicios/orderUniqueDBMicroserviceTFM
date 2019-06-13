@@ -15,12 +15,14 @@ public class OrderDto {
 
     private String description;
 
+    @JsonInclude(Include.NON_NULL)
     private String providerId;
 
     private LocalDateTime openingDate;
 
     private LocalDateTime closingDate;
 
+    @JsonInclude(Include.NON_NULL)
     private OrderLine[] orderLines;
 
     public OrderDto() {
@@ -34,6 +36,13 @@ public class OrderDto {
         this.description = order.getDescription();
         this.providerId = order.getProviderId();
         this.orderLines = order.getOrderLines();
+    }
+
+    public Order prepareOrder (){
+        Order order = new Order(this.description, this.providerId,this.orderLines);
+        order.setOpeningDate(this.openingDate);
+        order.setClosingDate(this.closingDate);
+        return order;
     }
 
     public String getDescription() {

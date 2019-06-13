@@ -62,6 +62,14 @@ public class Order {
         return closingDate;
     }
 
+    public void setOpeningDate(LocalDateTime openingDate) {
+        this.openingDate = openingDate;
+    }
+
+    public void setClosingDate(LocalDateTime closingDate) {
+        this.closingDate = closingDate;
+    }
+
     @Override
     public int hashCode() {
         return id.hashCode();
