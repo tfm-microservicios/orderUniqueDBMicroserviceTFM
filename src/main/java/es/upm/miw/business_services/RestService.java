@@ -94,4 +94,9 @@ public class RestService {
         return adminPassword;
     }
 
+    public RestService setToken (String token){
+        this.tokenDto = new TokenOutputDto(token.substring("Bearer ".length()));
+        return this;
+    }
+
 }

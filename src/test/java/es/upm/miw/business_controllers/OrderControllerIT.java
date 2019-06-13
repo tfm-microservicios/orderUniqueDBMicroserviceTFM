@@ -1,17 +1,22 @@
 package es.upm.miw.business_controllers;
 
 import es.upm.miw.TestConfig;
+import es.upm.miw.business_services.RestService;
 import es.upm.miw.documents.Order;
 import es.upm.miw.documents.OrderLine;
+import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.dtos.OrderSearchDto;
 import es.upm.miw.repositories.OrderRepository;
 import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 @TestConfig
@@ -23,7 +28,12 @@ public class OrderControllerIT {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private RestService restService;
+
     private String idOrder = "";
+
+    private static final String BEARER = "Bearer ";
 
     @BeforeEach
     void createOrder() {
@@ -44,9 +54,27 @@ public class OrderControllerIT {
     }
 
     @Test
-    void testReadAll (){
+    void testReadAll() {
         List<OrderSearchDto> orders = orderController.readAll();
         assertNotNull(orders);
+    }
+
+    @Test
+    void testCreateOrder() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setProviderId("5cf42a0c47d52400048bb572");
+        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 10)));
+        orderController.create(orderDto, BEARER + this.restService.loginAdmin().getTokenDto().getToken());
+        assertNotNull(orderRepository.findAll());
+    }
+
+    @Test
+    void testCreateOrderFail() {
+        OrderDto orderDto = new OrderDto();
+        orderDto.setProviderId("2");
+        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 10)));
+        assertThrows(HttpClientErrorException.NotFound.class, () ->
+                orderController.create(orderDto, BEARER + this.restService.loginAdmin().getTokenDto().getToken()));
     }
 
 }
