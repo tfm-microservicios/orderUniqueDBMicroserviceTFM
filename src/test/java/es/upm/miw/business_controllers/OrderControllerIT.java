@@ -6,8 +6,10 @@ import es.upm.miw.documents.Order;
 import es.upm.miw.documents.OrderLine;
 import es.upm.miw.dtos.OrderDto;
 import es.upm.miw.dtos.OrderSearchDto;
+import es.upm.miw.exceptions.NotFoundException;
 import es.upm.miw.repositories.OrderRepository;
 import org.assertj.core.util.Arrays;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
@@ -31,7 +33,7 @@ public class OrderControllerIT {
     @Autowired
     private RestService restService;
 
-    private String idOrder = "";
+    private static String idOrder = "";
 
     private static final String BEARER = "Bearer ";
 
@@ -63,18 +65,31 @@ public class OrderControllerIT {
     void testCreateOrder() {
         OrderDto orderDto = new OrderDto();
         orderDto.setProviderId("5cf42a0c47d52400048bb572");
-        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 10)));
-        orderController.create(orderDto, BEARER + this.restService.loginAdmin().getTokenDto().getToken());
-        assertNotNull(orderRepository.findAll());
+        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 17)));
+        OrderDto orderDtoResponse = orderController.create(orderDto, BEARER + this.restService.loginAdmin().getTokenDto().getToken());
+        assertNotNull(orderRepository.findById(orderDtoResponse.getId()));
     }
 
     @Test
     void testCreateOrderFail() {
         OrderDto orderDto = new OrderDto();
         orderDto.setProviderId("2");
-        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 10)));
+        orderDto.setOrderLines(Arrays.array(new OrderLine("1", 17)));
         assertThrows(HttpClientErrorException.NotFound.class, () ->
                 orderController.create(orderDto, BEARER + this.restService.loginAdmin().getTokenDto().getToken()));
+    }
+
+    @Test
+    void testDeleteOrder() {
+        Order order = this.orderRepository.findById(idOrder).orElse(null);
+        assertNotNull(order);
+        this.orderRepository.delete(order);
+        assertNull(this.orderRepository.findById(idOrder).orElse(null));
+    }
+
+    @AfterEach
+    void cleanDB (){
+        orderRepository.deleteAll();
     }
 
 }
