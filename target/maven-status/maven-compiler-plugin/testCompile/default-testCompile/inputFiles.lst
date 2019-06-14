@@ -1,12 +1,6 @@
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\business_controllers\ArticleControllerIT.java
 D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\business_services\JwtServiceIT.java
 D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\ApiTestConfig.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\ArticleResorceIT.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\business_controllers\ProviderControllerIT.java
 D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\documents\EncryptTest.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\repositories\ProviderRepositoryIT.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\ProviderResourceIT.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\RestBuilder.java
+D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\OrderResourceIT.java
+D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\business_controllers\OrderControllerIT.java
 D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\TestConfig.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\repositories\ArticleRepositoryIT.java
-D:\Trabajos Bruno\MIW\TFM\orderuniqueDBtfm\src\test\java\es\upm\miw\rest_controllers\RestService.java

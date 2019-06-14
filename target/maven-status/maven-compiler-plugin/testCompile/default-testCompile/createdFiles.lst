@@ -1,13 +1,6 @@
-es\upm\miw\repositories\ArticleRepositoryIT.class
-es\upm\miw\rest_controllers\RestBuilder.class
-es\upm\miw\rest_controllers\RestBuilder$1.class
-es\upm\miw\rest_controllers\ApiTestConfig.class
-es\upm\miw\rest_controllers\RestService.class
-es\upm\miw\rest_controllers\ProviderResourceIT.class
-es\upm\miw\TestConfig.class
-es\upm\miw\business_controllers\ArticleControllerIT.class
+es\upm\miw\business_controllers\OrderControllerIT.class
 es\upm\miw\documents\EncryptTest.class
-es\upm\miw\business_controllers\ProviderControllerIT.class
-es\upm\miw\repositories\ProviderRepositoryIT.class
-es\upm\miw\rest_controllers\ArticleResorceIT.class
+es\upm\miw\rest_controllers\OrderResourceIT.class
+es\upm\miw\rest_controllers\ApiTestConfig.class
+es\upm\miw\TestConfig.class
 es\upm\miw\business_services\JwtServiceIT.class

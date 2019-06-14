@@ -50,8 +50,8 @@ public class OrderController {
     }
 
     public OrderDto create(OrderDto orderDto, String token) {
-        this.restService.setToken(token).restBuilder(new RestBuilder<OrderMinimumValidationInputDto[]>())
-                .clazz(OrderMinimumValidationInputDto[].class).heroku().serverUri(articleProviderURI)
+        this.restService.setToken(token).restBuilder(new RestBuilder<>())
+                .heroku().serverUri(articleProviderURI)
                 .path(PROVIDERS_ARTICLES_VALIDATION).body(Arrays.asList(new OrderMinimumValidationInputDto(orderDto)))
                 .post().log().build();
         Order order = orderRepository.save(orderDto.prepareOrder());
