@@ -17,6 +17,7 @@ import java.util.List;
 public class OrderResource {
 
     public static final String ORDERS = "/orders";
+    public static final String ID = "/{id}";
 
     @Autowired
     private OrderController orderController;
@@ -29,6 +30,11 @@ public class OrderResource {
     @PostMapping
     public OrderDto create (@Valid @RequestBody OrderDto orderDto, @RequestHeader("Authorization") String token){
         return orderController.create(orderDto, token);
+    }
+
+    @DeleteMapping(value = ID)
+    public void  delete (@PathVariable String id){
+        this.orderController.delete(id);
     }
 
 }

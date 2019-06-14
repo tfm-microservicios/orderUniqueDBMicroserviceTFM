@@ -17,8 +17,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ApiTestConfig
 public class OrderResourceIT {
@@ -71,7 +70,7 @@ public class OrderResourceIT {
         OrderDto orderDtoResponse = this.restService.loginAdmin().restBuilder(new RestBuilder<OrderDto>()).clazz(OrderDto.class)
                 .path(OrderResource.ORDERS).body(orderDto)
                 .post().log().build();
-        assertNotNull(orderDtoResponse);
+        assertNotNull(this.orderRepository.findById(orderDtoResponse.getId()));
     }
 
     @Test
@@ -85,4 +84,17 @@ public class OrderResourceIT {
                 .post().log().build());
     }
 
+    @Test
+    void testDeleteOrder (){
+        OrderDto orderDto = new OrderDto();
+        orderDto.setProviderId("5cf42a0c47d52400048bb572");
+        orderDto.setOrderLines(org.assertj.core.util.Arrays.array(new OrderLine("1", 10)));
+        OrderDto orderDtoResponse = this.restService.loginAdmin().restBuilder(new RestBuilder<OrderDto>()).clazz(OrderDto.class)
+                .path(OrderResource.ORDERS).body(orderDto)
+                .post().log().build();
+        assertNotNull(this.orderRepository.findById(orderDtoResponse.getId()));
+        this.restService.loginAdmin().restBuilder(new RestBuilder<OrderDto>()).clazz(OrderDto.class).path(OrderResource.ORDERS)
+                .path(OrderResource.ID).expand(orderDtoResponse.getId()).delete().log().build();
+        assertNull(this.orderRepository.findById(orderDtoResponse.getId()).orElse(null));
+    }
 }

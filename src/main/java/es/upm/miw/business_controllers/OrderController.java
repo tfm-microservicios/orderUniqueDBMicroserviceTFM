@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class OrderController {
@@ -51,10 +52,17 @@ public class OrderController {
     public OrderDto create(OrderDto orderDto, String token) {
         this.restService.setToken(token).restBuilder(new RestBuilder<OrderMinimumValidationInputDto[]>())
                 .clazz(OrderMinimumValidationInputDto[].class).heroku().serverUri(articleProviderURI)
-        .path(PROVIDERS_ARTICLES_VALIDATION).body(Arrays.asList(new OrderMinimumValidationInputDto(orderDto)))
-        .post().log().build();
-        orderRepository.save(orderDto.prepareOrder());
-        return orderDto;
+                .path(PROVIDERS_ARTICLES_VALIDATION).body(Arrays.asList(new OrderMinimumValidationInputDto(orderDto)))
+                .post().log().build();
+        Order order = orderRepository.save(orderDto.prepareOrder());
+        return new OrderDto(order);
+    }
+
+    public void delete(String id) {
+        Optional<Order> order = this.orderRepository.findById(id);
+        if (order.isPresent()) {
+            this.orderRepository.delete(order.get());
+        }
     }
 
     private void createAddOrderSearchDto(OrderDto dto, OrderLine orderLine) {
@@ -63,4 +71,5 @@ public class OrderController {
                 orderLine.getRequiredAmount(), orderLine.getFinalAmount(), dto.getOpeningDate(), dto.getClosingDate());
         orderSearchDtos.add(orderSearchDto);
     }
+
 }
